@@ -14,8 +14,8 @@ jobs:
         with:
           app-id: ${{vars.APP_ID}}
           private-key: ${{secrets.APP_PRIVATE_KEY}}
-          # owner: kishida-main-org
-          # repositories: apps-test, another-repo
+          owner: kishida-main-org
+          repositories: apps-test, another-repo
       # Step 2: 取得したトークンを使って別のリポジトリをクローン
       - name: Checkout another repository
         uses: actions/checkout@v4
