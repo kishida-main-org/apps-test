@@ -20,14 +20,14 @@ jobs:
       - name: Checkout another repository
         uses: actions/checkout@v4
         with:
-          # repository: kishida-main-org/another-repo
-          repository: kishida-main-org/public-repo
+          repository: kishida-main-org/another-repo
+          # repository: kishida-main-org/public-repo
           token: ${{steps.generate_token.outputs.token}}
-          # path: another-repo
-          path: public-repo
+          path: another-repo
+          # path: public-repo
       # Step 3: 別のリポジトリの内容を表示
       - name: List files in another repository
         run: |
           echo "別のリポジトリの内容を表示"
-          # ls -la another-repo/
-          ls -la public-repo/
+          ls -la another-repo/
+          # ls -la public-repo/
