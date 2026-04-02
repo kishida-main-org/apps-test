@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  access-repo:
+  access-repo-another:
     runs-on: ubuntu-latest
     steps:
       # Step 1: GitHub Appsからトークンを取得
@@ -21,13 +21,35 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: kishida-main-org/another-repo
-          # repository: kishida-main-org/public-repo
           token: ${{steps.generate_token.outputs.token}}
           path: another-repo
-          # path: public-repo
       # Step 3: 別のリポジトリの内容を表示
       - name: List files in another repository
         run: |
           echo "別のリポジトリの内容を表示"
           ls -la another-repo/
-          # ls -la public-repo/
+
+  access-repo-public:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: GitHub Appsからトークンを取得
+      - name: Generate token from GitHub Apps
+        id: generate_token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{vars.APP_ID}}
+          private-key: ${{secrets.APP_PRIVATE_KEY}}
+          owner: kishida-main-org
+          repositories: apps-test
+      # Step 2: 取得したトークンを使って別のリポジトリをクローン
+      - name: Checkout another repository
+        uses: actions/checkout@v4
+        with:
+          repository: kishida-main-org/public-repo
+          token: ${{steps.generate_token.outputs.token}}
+          path: public-repo
+      # Step 3: 別のリポジトリの内容を表示
+      - name: List files in another repository
+        run: |
+          echo "別のリポジトリの内容を表示"
+          ls -la public-repo/
