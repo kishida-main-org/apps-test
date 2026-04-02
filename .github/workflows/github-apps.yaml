@@ -1,0 +1,30 @@
+name: Access Another Repository with GitHub Apps
+
+on:
+  workflow_dispatch:
+
+jobs:
+  access-repo:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: GitHub Appsからトークンを取得
+      - name: Generate token from GitHub Apps
+        id: generate_token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{vars.APP_ID}}
+          private-key: ${{secrets.APP_PRIVATE_KEY}}
+          owner: kishida-main-org
+          repositories: apps-test, another-repo
+      # Step 2: 取得したトークンを使って別のリポジトリをクローン
+      - name: Checkout another repository
+        uses: actions/checkout@v4
+        with:
+          repository: kishida-main-org/another-repo
+          token: ${{steps.generate_token.outputs.token}}
+          path: another-repo
+      # Step 3: 別のリポジトリの内容を表示
+      - name: List files in another repository
+        run: |
+          echo "別のリポジトリの内容を表示"
+          ls -la another-repo/
